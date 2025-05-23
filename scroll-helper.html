@@ -42,7 +42,20 @@
       border-left: 4px solid #5fafff;
       white-space: pre-wrap;
     }
-  </style>
+  
+    nav {
+      padding-bottom: 1.5rem;
+    }
+    nav a {
+      margin-right: 1rem;
+      color: #89b4fa;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #b4d4ff;
+    }
+    </style>
 </head>
 <body>
   <nav>
@@ -108,7 +121,16 @@ ${tagLine}`;
 </html>
 
 <script>
-  // Hidden activation with key sequence: SHIFT + T + O + O + L
+  // Hidden activation with key sequence: scrollmode
+  let typedKeys = '';
+  window.addEventListener('keydown', (e) => {
+    typedKeys += e.key.toLowerCase();
+    if (typedKeys.endsWith('scrollmode')) {
+      const tool = document.getElementById('scrollTool');
+      if (tool) tool.style.display = 'block';
+    }
+    if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
+  });: scrollmode
   let toolKeySequence = [];
   const toolKeys = ['Shift', 'T', 'O', 'O', 'L'];
 
