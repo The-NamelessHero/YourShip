@@ -105,8 +105,15 @@
       <li>Loading scrolls from GitHub...</li>
     </ul>
     <div class="scroll-content" id="scroll-viewer"></div>
-  </div>
-  <div id="scrollTool" style="display: none; padding: 20px; border: 2px solid #555; margin-top: 20px;">
+ <!-- 🔒 Hidden Scrollforge Tool -->
+<div id="scrollTool" style="display: none; margin-top: 40px; border: 2px solid #555; padding: 20px; border-radius: 10px; background: #1a1a1a;">
+  <h2>🛠️ Scroll Creator Tool</h2>
+  <textarea id="scrollEditor" placeholder="Write your sacred scroll here..." style="width: 100%; height: 200px; background: #111; color: #eee; padding: 1em; border-radius: 6px;"></textarea>
+  <br />
+  <button onclick="saveScroll()" style="margin-top: 10px;">📥 Save to Archive (local)</button>
+  <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
+</div>
+
   <script>
     const repo = "The-NamelessHero/YourShip";
     const scrollList = document.getElementById("scroll-list");
@@ -159,6 +166,15 @@
       });
   </script>
   <script>
+    fetch('scroll-tags.json')
+      .then(response => response.json())
+      .then(data => {
+        // Code to display tags
+      })
+      .catch(error => console.error('Error loading tags:', error));
+  </script>
+  
+  <script>
     let typedKeys = '';
     window.addEventListener('keydown', (e) => {
       typedKeys += e.key.toLowerCase();
@@ -170,7 +186,13 @@
       }
       if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
     });
+  
+    function saveScroll() {
+      const content = document.getElementById('scrollEditor').value;
+      alert("📜 Scroll saved (in memory):\n\n" + content);
+    }
   </script>
+  
   
 </body>
 </html>
