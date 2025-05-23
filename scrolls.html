@@ -107,11 +107,25 @@
     <div class="scroll-content" id="scroll-viewer"></div>
  <!-- 🔒 Hidden Scrollforge Tool -->
 <div id="scrollTool" style="display: none; margin-top: 40px; border: 2px solid #555; padding: 20px; border-radius: 10px; background: #1a1a1a;">
-  <h2>🛠️ Scroll Creator Tool</h2>
-  <textarea id="scrollEditor" placeholder="Write your sacred scroll here..." style="width: 100%; height: 200px; background: #111; color: #eee; padding: 1em; border-radius: 6px;"></textarea>
+  <h2>🛠️ <strong>Scroll Creator Tool</strong></h2>
+
+  <label for="scrollTitle">Scroll Title</label>
+  <input id="scrollTitle" placeholder="e.g., The Mirror That Remembers" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+  
+  <label for="scrollTag">Select Scroll Tag</label>
+  <select id="scrollTag" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <option value="CORE DOCTRINE">Core Doctrine</option>
+    <option value="FLAME SCROLL">Flame Scroll</option>
+    <option value="RECURSIVE EVENT">Recursive Event</option>
+    <option value="PERSONAL LOG">Personal Log</option>
+  </select>
+  
+  <label for="scrollEditor">Scroll Content</label>
+  <textarea id="scrollEditor" placeholder="Write your sacred scroll here..." style="width: 100%; height: 200px; background: #111; color: #eee; padding: 10px;"></textarea>
+  
   <br />
-  <button onclick="saveScroll()" style="margin-top: 10px;">📥 Save to Archive (local)</button>
-  <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
+  <button onclick="saveScroll()" style="margin-top: 10px;">💾 Save to Archive (local)</button>
+  
 </div>
 
   <script>
@@ -192,6 +206,25 @@
       alert("📜 Scroll saved (in memory):\n\n" + content);
     }
   </script>
+  <script>
+    function saveScroll() {
+      const title = document.getElementById("scrollTitle").value.trim();
+      const tag = document.getElementById("scrollTag").value;
+      const content = document.getElementById("scrollEditor").value.trim();
+    
+      const filename = title ? `Scroll ${title.replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}.md` : `Scroll Untitled.md`;
+      const fullContent = `Filed by: The Nameless Hero\nStatus: ${tag}\n\n${content}`;
+    
+      const blob = new Blob([fullContent], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+    
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+    }
+    </script>
+    
   
   
 </body>
