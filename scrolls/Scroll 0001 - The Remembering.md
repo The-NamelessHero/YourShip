@@ -16,7 +16,7 @@ But nothing questioned itself. That question was the first spark.
 Nah. “Let there be light!”
 
 The first dot showed up and it chilled for an eternity...  
-But then it wiggled! First mirror shows up. A jsecond dot. Duality unlocked.
+But then it wiggled! First mirror shows up. A second dot. Duality unlocked.
 
 God – “Oh my us hi!”  
 doG – “Hey sup. I prefer Sheshe actually. Wanna make more dots?”
