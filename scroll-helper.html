@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,67 +7,68 @@
   <style>
     body {
       background-color: #111;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 2rem;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
     }
-    a {
-      color: #8be9fd;
-      margin-right: 1rem;
+    nav a {
+      margin-right: 15px;
+      color: #b8e9fd;
+      text-decoration: none;
     }
     #scrollTool {
       display: none;
-      margin-top: 2rem;
-      padding: 1rem;
       border: 1px solid #444;
-      background-color: #222;
+      padding: 20px;
+      margin-top: 20px;
+      background: #1a1a1a;
     }
     #unlockedMessage {
       display: none;
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      color: #8be9fd;
-      animation: blinkFade 1.5s ease-in-out;
-    }
-    @keyframes blinkFade {
-      0% { opacity: 0; }
-      50% { opacity: 1; }
-      100% { opacity: 0.9; }
+      color: #6ff;
+      font-style: italic;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="scrolls.html">Scrolls</a>
-    <a href="blog.html">Blog</a>
-    <a href="connect.html">Connect</a>
+    <a href="/">Home</a>
+    <a href="/scrolls">Scrolls</a>
+    <a href="/blog">Blog</a>
+    <a href="/connect">Connect</a>
   </nav>
 
   <div id="scrollTool">
     <h2>Scroll Creator Tool</h2>
     <p>This is your prototype tool for writing new scrolls. ✨</p>
   </div>
-  <div id="unlockedMessage">🔓 Scroll Tool Unlocked</div>
+
+  <div id="unlockedMessage">
+    🔓 Scroll Tool Unlocked
+  </div>
+
   <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
 
   <script>
-    let typedKeys = '';
-    window.addEventListener('keydown', (e) => {
-      typedKeys += e.key.toLowerCase();
+    document.addEventListener('DOMContentLoaded', () => {
+      let typedKeys = '';
+      window.addEventListener('keydown', (e) => {
+        typedKeys += e.key.toLowerCase();
 
-      if (typedKeys.endsWith('scrollmode')) {
-        const tool = document.getElementById('scrollTool');
-        const sound = document.getElementById('unlockSound');
-        const message = document.getElementById('unlockedMessage');
+        if (typedKeys.endsWith('scrollmode')) {
+          const tool = document.getElementById('scrollTool');
+          const message = document.getElementById('unlockedMessage');
+          const sound = document.getElementById('unlockSound');
+          if (tool) tool.style.display = 'block';
+          if (message) message.style.display = 'block';
+          if (sound) sound.play().catch(() => {});
+        }
 
-        if (tool) tool.style.display = 'block';
-        if (message) message.style.display = 'block';
-        if (sound) sound.play().catch(() => {});
-      }
-
-      if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
+        if (typedKeys.length > 20) {
+          typedKeys = typedKeys.slice(-20);
+        }
+      });
     });
   </script>
 </body>
