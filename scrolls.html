@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scrolls | YourShip</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -111,6 +111,11 @@
     const scrollList = document.getElementById("scroll-list");
     const viewer = document.getElementById("scroll-viewer");
 
+    async function loadTags() {
+      const res = await fetch("https://raw.githubusercontent.com/" + repo + "/main/scroll-tags.json");
+      return await res.json();
+    }
+
     function scrollToViewerIfNeeded() {
       const rect = viewer.getBoundingClientRect();
       if (rect.top > window.innerHeight || window.scrollY === 0) {
@@ -127,14 +132,16 @@
 
     fetch(`https://api.github.com/repos/${repo}/contents/scrolls`)
       .then(response => response.json())
-      .then(data => {
+      .then(async data => {
+        const tags = await loadTags();
         scrollList.innerHTML = "";
         data.filter(file => file.name.endsWith(".md")).forEach(file => {
           const li = document.createElement("li");
           const a = document.createElement("a");
           a.href = "#";
           a.className = "scroll-link";
-          a.textContent = file.name.replace(".md", "").replace(/-/g, " ");
+          const tag = tags[file.name] ? `[${tags[file.name]}] ` : "";
+          a.textContent = tag + file.name.replace(".md", "").replace(/-/g, " ");
           a.onclick = async () => {
             const res = await fetch(file.download_url + "?cache=" + new Date().getTime());
             const md = await res.text();
