@@ -7,27 +7,56 @@
   <style>
     body {
       background-color: #111;
-      color: #eee;
+      color: #f0f0f0;
       font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: #111;
       padding: 20px;
+      text-align: center;
     }
+
     nav a {
-      margin-right: 15px;
-      color: #b8e9fd;
+      color: #88ccff;
+      margin: 0 15px;
       text-decoration: none;
+      font-weight: bold;
     }
+
     #scrollTool {
       display: none;
       border: 1px solid #444;
-      padding: 20px;
-      margin-top: 20px;
-      background: #1a1a1a;
+      margin: 40px auto;
+      padding: 40px;
+      max-width: 800px;
+      background-color: #1e1e1e;
+      border-radius: 10px;
     }
+
+    h2 {
+      color: #ffffff;
+      font-size: 28px;
+    }
+
+    p {
+      color: #ccc;
+      font-size: 18px;
+    }
+
     #unlockedMessage {
       display: none;
-      color: #6ff;
+      color: #ffcc00;
       font-style: italic;
-      margin-top: 10px;
+      margin-top: 30px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    #unlockedMessage::before {
+      content: "🔓 ";
     }
   </style>
 </head>
@@ -44,31 +73,24 @@
     <p>This is your prototype tool for writing new scrolls. ✨</p>
   </div>
 
-  <div id="unlockedMessage">
-    🔓 Scroll Tool Unlocked
-  </div>
+  <div id="unlockedMessage">Scroll Tool Unlocked</div>
 
   <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      let typedKeys = '';
-      window.addEventListener('keydown', (e) => {
-        typedKeys += e.key.toLowerCase();
-
-        if (typedKeys.endsWith('scrollmode')) {
-          const tool = document.getElementById('scrollTool');
-          const message = document.getElementById('unlockedMessage');
-          const sound = document.getElementById('unlockSound');
-          if (tool) tool.style.display = 'block';
-          if (message) message.style.display = 'block';
-          if (sound) sound.play().catch(() => {});
-        }
-
-        if (typedKeys.length > 20) {
-          typedKeys = typedKeys.slice(-20);
-        }
-      });
+    // Hidden activation with key sequence: scrollmode
+    let typedKeys = '';
+    window.addEventListener('keydown', (e) => {
+      typedKeys += e.key.toLowerCase();
+      if (typedKeys.endsWith('scrollmode')) {
+        const tool = document.getElementById('scrollTool');
+        const sound = document.getElementById('unlockSound');
+        const message = document.getElementById('unlockedMessage');
+        if (tool) tool.style.display = 'block';
+        if (message) message.style.display = 'block';
+        if (sound) sound.play().catch(() => {});
+      }
+      if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
     });
   </script>
 </body>
