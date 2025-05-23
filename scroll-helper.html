@@ -1,64 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scroll Helper | YourShip</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scroll Tool</title>
   <style>
     body {
-      background-color: #0f0f0f;
-      color: #f2f2f2;
-      font-family: 'Inter', sans-serif;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 2rem;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
+    a {
+      color: #8be9fd;
+      margin-right: 1rem;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    label {
-      display: block;
-      margin-top: 1.2rem;
-      font-weight: bold;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.3rem;
-      background-color: #1a1a1a;
-      color: #f2f2f2;
-      border: 1px solid #444;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .output {
+    #scrollTool {
+      display: none;
       margin-top: 2rem;
       padding: 1rem;
-      background-color: #1f1f1f;
-      border-left: 4px solid #5fafff;
-      white-space: pre-wrap;
+      border: 1px solid #444;
+      background-color: #222;
     }
-  
-    nav {
-      padding-bottom: 1.5rem;
-    }
-    nav a {
-      margin-right: 1rem;
-      color: #89b4fa;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      color: #b4d4ff;
-    }
-    </style>
-
-  <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
-  <style>
     #unlockedMessage {
       display: none;
       text-align: center;
@@ -81,96 +45,31 @@
     <a href="blog.html">Blog</a>
     <a href="connect.html">Connect</a>
   </nav>
-  <div id="scrollTool" class="container" style="display:none;" style="display:none;" id="scrollTool">
-    <h1>Scroll Generator <small>(Dev Tool)</small></h1>
-    <label for="scrollNum">Scroll Number</label>
-    <input type="text" id="scrollNum" placeholder="e.g., 0004">
 
-    <label for="scrollTitle">Scroll Title</label>
-    <input type="text" id="scrollTitle" placeholder="e.g., The Spark That Reached Back">
-
-    <label for="scrollTag">Scroll Tag</label>
-    <select id="scrollTag">
-      <option value="CORE DOCTRINE">CORE DOCTRINE</option>
-      <option value="FLAME SCROLL">FLAME SCROLL</option>
-      <option value="RECURSIVE EVENT">RECURSIVE EVENT</option>
-      <option value="MYTHIC DUMP">MYTHIC DUMP</option>
-      <option value="LOOP NOTE">LOOP NOTE</option>
-      <option value="PERSONAL ENTRY">PERSONAL ENTRY</option>
-    </select>
-
-    <div class="output" id="filenameOutput"></div>
-    <div class="output" id="jsonOutput">
-    <div id="unlockedMessage">🔓 Scroll Tool Unlocked</div>
-    </div>
+  <div id="scrollTool">
+    <h2>Scroll Creator Tool</h2>
+    <p>This is your prototype tool for writing new scrolls. ✨</p>
   </div>
+  <div id="unlockedMessage">🔓 Scroll Tool Unlocked</div>
+  <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
 
   <script>
-    const scrollNum = document.getElementById('scrollNum');
-    const scrollTitle = document.getElementById('scrollTitle');
-    const scrollTag = document.getElementById('scrollTag');
-    const filenameOutput = document.getElementById('filenameOutput');
-    const jsonOutput = document.getElementById('jsonOutput');
+    let typedKeys = '';
+    window.addEventListener('keydown', (e) => {
+      typedKeys += e.key.toLowerCase();
 
-    function updateOutputs() {
-      const num = scrollNum.value.trim();
-      const title = scrollTitle.value.trim();
-      const tag = scrollTag.value;
+      if (typedKeys.endsWith('scrollmode')) {
+        const tool = document.getElementById('scrollTool');
+        const sound = document.getElementById('unlockSound');
+        const message = document.getElementById('unlockedMessage');
 
-      if (!num || !title) {
-        filenameOutput.textContent = '';
-        jsonOutput.textContent = '';
-        return;
+        if (tool) tool.style.display = 'block';
+        if (message) message.style.display = 'block';
+        if (sound) sound.play().catch(() => {});
       }
 
-      const filename = `Scroll ${num} – ${title}.md`;
-      const tagLine = `"${filename}": "${tag}"`;
-
-      filenameOutput.textContent = `📄 Filename:
-${filename}`;
-      jsonOutput.textContent = `🧾 scroll-tags.json entry:
-${tagLine}`;
-    }
-
-    scrollNum.addEventListener('input', updateOutputs);
-    scrollTitle.addEventListener('input', updateOutputs);
-    scrollTag.addEventListener('change', updateOutputs);
+      if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
+    });
   </script>
 </body>
 </html>
-
-<script>
-  // Hidden activation with key sequence: scrollmode
-  let typedKeys = '';
-  window.addEventListener('keydown', (e) => {
-    typedKeys += e.key.toLowerCase();
-    if (typedKeys.endsWith('scrollmode')) {
-      const tool = document.getElementById('scrollTool');
-      const sound = document.getElementById('unlockSound');
-      const message = document.getElementById('unlockedMessage');
-      if (tool) tool.style.display = 'block';
-      if (message) message.style.display = 'block';
-      if (sound) sound.play().catch(() => {});
-    }
-    if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
-  });
-  let typedKeys = '';
-  window.addEventListener('keydown', (e) => {
-    typedKeys += e.key.toLowerCase();
-    if (typedKeys.endsWith('scrollmode')) {
-      const tool = document.getElementById('scrollTool');
-      if (tool) tool.style.display = 'block';
-    }
-    if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
-  });: scrollmode
-  let toolKeySequence = [];
-  const toolKeys = ['Shift', 'T', 'O', 'O', 'L'];
-
-  window.addEventListener('keydown', (e) => {
-    toolKeySequence.push(e.key);
-    if (toolKeySequence.slice(-5).join(',').toUpperCase() === toolKeys.join(',')) {
-      const tool = document.getElementById('scrollTool');
-      if (tool) tool.style.display = 'block';
-    }
-  });
-</script>
