@@ -73,7 +73,34 @@
     <button onclick="markSacred()">Mark as Sacred ✨</button>
     <button onclick="submitArchive()">Submit to Archive 📤</button>
   </div>
+<!-- 🔒 Hidden ScrollForge Tool -->
+<div id="scrollTool" style="display: none; padding: 20px; border: 2px solid #555; margin-top: 20px;">
+  <h2>Scroll Creator Tool</h2>
+  <p>This is your prototype tool for writing new scrolls. ✨</p>
+  <textarea id="scrollEditor" placeholder="Write your scroll here..." style="width: 100%; height: 200px; background: #111; color: #eee; padding: 10px; border: none;"></textarea>
+  <br/>
+  <button onclick="saveScroll()" style="margin-top: 10px;">💾 Save to Archive</button>
+  <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
+</div>
 
+<script>
+  let typedKeys = '';
+  window.addEventListener('keydown', (e) => {
+    typedKeys += e.key.toLowerCase();
+    if (typedKeys.endsWith('scrollmode')) {
+      const tool = document.getElementById('scrollTool');
+      const sound = document.getElementById('unlockSound');
+      if (tool) tool.style.display = 'block';
+      if (sound) sound.play().catch(() => {});
+    }
+    if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
+  });
+
+  function saveScroll() {
+    const content = document.getElementById('scrollEditor').value;
+    alert("Scroll saved (in memory):\n\n" + content);
+  }
+</script>
   <script>
     function saveDraft() {
       const title = document.getElementById('scrollTitle').value || 'Untitled';
