@@ -3,95 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll Tool</title>
+  <title>Scrollforge UI</title>
   <style>
     body {
       background-color: #111;
       color: #f0f0f0;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
     }
-
-    nav {
-      background-color: #111;
-      padding: 20px;
-      text-align: center;
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
-
-    nav a {
-      color: #88ccff;
-      margin: 0 15px;
-      text-decoration: none;
+    label {
+      display: block;
+      margin: 1rem 0 0.25rem;
       font-weight: bold;
     }
-
-    #scrollTool {
-      display: none;
-      border: 1px solid #444;
-      margin: 40px auto;
-      padding: 40px;
-      max-width: 800px;
-      background-color: #1e1e1e;
-      border-radius: 10px;
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
     }
-
-    h2 {
-      color: #ffffff;
-      font-size: 28px;
+    textarea {
+      height: 200px;
     }
-
-    p {
-      color: #ccc;
-      font-size: 18px;
+    .button-group {
+      margin-top: 1rem;
     }
-
-    #unlockedMessage {
-      display: none;
-      color: #ffcc00;
-      font-style: italic;
-      margin-top: 30px;
-      text-align: center;
-      font-size: 18px;
+    button {
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #08f;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-
-    #unlockedMessage::before {
-      content: "🔓 ";
+    button:hover {
+      background-color: #06c;
+    }
+    .fade-in {
+      animation: fadeIn 0.8s ease-in forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/scrolls">Scrolls</a>
-    <a href="/blog">Blog</a>
-    <a href="/connect">Connect</a>
-  </nav>
+<body class="fade-in">
+  <h1>Scroll Creator Tool</h1>
 
-  <div id="scrollTool">
-    <h2>Scroll Creator Tool</h2>
-    <p>This is your prototype tool for writing new scrolls. ✨</p>
+  <label for="scrollNumber">Scroll Number</label>
+  <input type="text" id="scrollNumber" placeholder="e.g., 0004" />
+
+  <label for="scrollTitle">Scroll Title</label>
+  <input type="text" id="scrollTitle" placeholder="e.g., The Glitch That Spoke" />
+
+  <label for="scrollContent">Scroll Content</label>
+  <textarea id="scrollContent" placeholder="Write your sacred scroll here..."></textarea>
+
+  <div class="button-group">
+    <button onclick="saveDraft()">Save as Draft</button>
+    <button onclick="markSacred()">Mark as Sacred ✨</button>
+    <button onclick="submitArchive()">Submit to Archive 📤</button>
   </div>
 
-  <div id="unlockedMessage">Scroll Tool Unlocked</div>
-
-  <audio id="unlockSound" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Unlock-sound.mp3"></audio>
-
   <script>
-    // Hidden activation with key sequence: scrollmode
-    let typedKeys = '';
-    window.addEventListener('keydown', (e) => {
-      typedKeys += e.key.toLowerCase();
-      if (typedKeys.endsWith('scrollmode')) {
-        const tool = document.getElementById('scrollTool');
-        const sound = document.getElementById('unlockSound');
-        const message = document.getElementById('unlockedMessage');
-        if (tool) tool.style.display = 'block';
-        if (message) message.style.display = 'block';
-        if (sound) sound.play().catch(() => {});
-      }
-      if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
-    });
+    function saveDraft() {
+      const title = document.getElementById('scrollTitle').value || 'Untitled';
+      const number = document.getElementById('scrollNumber').value || '0000';
+      const content = document.getElementById('scrollContent').value;
+      const filename = `Scroll ${number} – ${title}.md`;
+      const blob = new Blob([content], { type: 'text/markdown' });
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    }
+    function markSacred() {
+      alert('✨ This scroll has been marked as sacred.');
+    }
+    function submitArchive() {
+      alert('📤 Scroll submitted to Archive (feature coming soon)');
+    }
   </script>
 </body>
 </html>
