@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scrolls | YourShip</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -46,12 +47,47 @@
     a.scroll-link:hover {
       text-decoration: underline;
     }
-    iframe {
-      width: 100%;
-      height: 80vh;
-      background: #fff;
-      border: none;
-      margin-top: 2rem;
+    .scroll-content {
+      margin-top: 3rem;
+      background-color: #1a1a1a;
+      padding: 2rem;
+      border-radius: 10px;
+      line-height: 1.7;
+      transition: box-shadow 0.5s ease, background-color 0.5s ease;
+    }
+    .scroll-content h1 {
+      font-size: 2em;
+      margin-top: 1.5em;
+      border-bottom: 1px solid #555;
+      padding-bottom: 0.3em;
+    }
+    .scroll-content h2 {
+      font-size: 1.5em;
+      margin-top: 1.2em;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.2em;
+    }
+    .scroll-content em {
+      color: #bbb;
+      font-style: italic;
+    }
+    .scroll-content blockquote {
+      margin: 1em 0;
+      padding-left: 1em;
+      border-left: 3px solid #ccc;
+      color: #aaa;
+      font-style: italic;
+    }
+    .scroll-content code {
+      background: #333;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-size: 0.95em;
+      color: #ffcc99;
+    }
+    .highlighted {
+      box-shadow: 0 0 12px 4px #1e90ff44;
+      background-color: #1f2a44;
     }
   </style>
 </head>
@@ -68,12 +104,26 @@
     <ul id="scroll-list">
       <li>Loading scrolls from GitHub...</li>
     </ul>
-    <iframe id="scroll-viewer" src="" style="display:none;"></iframe>
+    <div class="scroll-content" id="scroll-viewer"></div>
   </div>
   <script>
-    const repo = "The-NamelessHero/YourShip"; // replace if your GitHub username or repo is different
+    const repo = "The-NamelessHero/YourShip";
     const scrollList = document.getElementById("scroll-list");
     const viewer = document.getElementById("scroll-viewer");
+
+    function scrollToViewerIfNeeded() {
+      const rect = viewer.getBoundingClientRect();
+      if (rect.top > window.innerHeight || window.scrollY === 0) {
+        viewer.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+
+    function highlightScrollViewer() {
+      viewer.classList.add("highlighted");
+      setTimeout(() => {
+        viewer.classList.remove("highlighted");
+      }, 1500);
+    }
 
     fetch(`https://api.github.com/repos/${repo}/contents/scrolls`)
       .then(response => response.json())
@@ -85,9 +135,12 @@
           a.href = "#";
           a.className = "scroll-link";
           a.textContent = file.name.replace(".md", "").replace(/-/g, " ");
-          a.onclick = () => {
-            viewer.style.display = "block";
-            viewer.src = `https://raw.githubusercontent.com/${repo}/main/scrolls/${file.name}`;
+          a.onclick = async () => {
+            const res = await fetch(file.download_url + "?cache=" + new Date().getTime());
+            const md = await res.text();
+            viewer.innerHTML = marked.parse(md);
+            scrollToViewerIfNeeded();
+            highlightScrollViewer();
           };
           li.appendChild(a);
           scrollList.appendChild(li);
