@@ -106,6 +106,7 @@
     </ul>
     <div class="scroll-content" id="scroll-viewer"></div>
   </div>
+  <div id="scrollTool" style="display: none; padding: 20px; border: 2px solid #555; margin-top: 20px;">
   <script>
     const repo = "The-NamelessHero/YourShip";
     const scrollList = document.getElementById("scroll-list");
@@ -157,5 +158,19 @@
         scrollList.innerHTML = "<li>Failed to load scrolls. Try again later.</li>";
       });
   </script>
+  <script>
+    let typedKeys = '';
+    window.addEventListener('keydown', (e) => {
+      typedKeys += e.key.toLowerCase();
+      if (typedKeys.endsWith('scrollmode')) {
+        const tool = document.getElementById('scrollTool');
+        const sound = document.getElementById('unlockSound');
+        if (tool) tool.style.display = 'block';
+        if (sound) sound.play().catch(() => {});
+      }
+      if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
+    });
+  </script>
+  
 </body>
 </html>
