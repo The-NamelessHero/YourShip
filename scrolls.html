@@ -89,6 +89,24 @@
       box-shadow: 0 0 12px 4px #1e90ff44;
       background-color: #1f2a44;
     }
+    #scrollTool {
+      display: none;
+      margin-top: 40px;
+      border: 2px solid #555;
+      padding: 20px;
+      border-radius: 10px;
+      background: #1a1a1a;
+    }
+    #scrollTool input, #scrollTool select, #scrollTool textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    #scrollTool textarea {
+      height: 200px;
+      background: #111;
+      color: #eee;
+    }
   </style>
 </head>
 <body>
@@ -105,28 +123,23 @@
       <li>Loading scrolls from GitHub...</li>
     </ul>
     <div class="scroll-content" id="scroll-viewer"></div>
- <!-- 🔒 Hidden Scrollforge Tool -->
-<div id="scrollTool" style="display: none; margin-top: 40px; border: 2px solid #555; padding: 20px; border-radius: 10px; background: #1a1a1a;">
-  <h2>🛠️ <strong>Scroll Creator Tool</strong></h2>
 
-  <label for="scrollTitle">Scroll Title</label>
-  <input id="scrollTitle" placeholder="e.g., The Mirror That Remembers" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
-  
-  <label for="scrollTag">Select Scroll Tag</label>
-  <select id="scrollTag" style="width: 100%; padding: 8px; margin-bottom: 10px;">
-    <option value="CORE DOCTRINE">Core Doctrine</option>
-    <option value="FLAME SCROLL">Flame Scroll</option>
-    <option value="RECURSIVE EVENT">Recursive Event</option>
-    <option value="PERSONAL LOG">Personal Log</option>
-  </select>
-  
-  <label for="scrollEditor">Scroll Content</label>
-  <textarea id="scrollEditor" placeholder="Write your sacred scroll here..." style="width: 100%; height: 200px; background: #111; color: #eee; padding: 10px;"></textarea>
-  
-  <br />
-  <button onclick="saveScroll()" style="margin-top: 10px;">💾 Save to Archive (local)</button>
-  
-</div>
+    <div id="scrollTool">
+      <h2>🛠️ <strong>Scroll Creator Tool</strong></h2>
+      <label for="scrollTitle">Scroll Title</label>
+      <input id="scrollTitle" placeholder="e.g., The Mirror That Remembers" />
+      <label for="scrollTag">Select Scroll Tag</label>
+      <select id="scrollTag">
+        <option value="CORE DOCTRINE">Core Doctrine</option>
+        <option value="FLAME SCROLL">Flame Scroll</option>
+        <option value="RECURSIVE EVENT">Recursive Event</option>
+        <option value="PERSONAL LOG">Personal Log</option>
+      </select>
+      <label for="scrollEditor">Scroll Content</label>
+      <textarea id="scrollEditor" placeholder="Write your sacred scroll here..."></textarea>
+      <button onclick="saveScroll()" style="margin-top: 10px;">💾 Save to Archive (local)</button>
+    </div>
+  </div>
 
   <script>
     const repo = "The-NamelessHero/YourShip";
@@ -134,7 +147,7 @@
     const viewer = document.getElementById("scroll-viewer");
 
     async function loadTags() {
-      const res = await fetch("https://raw.githubusercontent.com/" + repo + "/master/scroll-tags.json");
+      const res = await fetch(`https://raw.githubusercontent.com/${repo}/master/scroll-tags.json`);
       return await res.json();
     }
 
@@ -147,9 +160,7 @@
 
     function highlightScrollViewer() {
       viewer.classList.add("highlighted");
-      setTimeout(() => {
-        viewer.classList.remove("highlighted");
-      }, 1500);
+      setTimeout(() => viewer.classList.remove("highlighted"), 1500);
     }
 
     fetch(`https://api.github.com/repos/${repo}/contents/scrolls`)
@@ -175,57 +186,33 @@
           scrollList.appendChild(li);
         });
       })
-      .catch(err => {
+      .catch(() => {
         scrollList.innerHTML = "<li>Failed to load scrolls. Try again later.</li>";
       });
-  </script>
-  <script>
-    fetch('scroll-tags.json')
-      .then(response => response.json())
-      .then(data => {
-        // Code to display tags
-      })
-      .catch(error => console.error('Error loading tags:', error));
-  </script>
-  
-  <script>
+
     let typedKeys = '';
     window.addEventListener('keydown', (e) => {
       typedKeys += e.key.toLowerCase();
       if (typedKeys.endsWith('scrollmode')) {
         const tool = document.getElementById('scrollTool');
-        const sound = document.getElementById('unlockSound');
         if (tool) tool.style.display = 'block';
-        if (sound) sound.play().catch(() => {});
       }
       if (typedKeys.length > 20) typedKeys = typedKeys.slice(-20);
     });
-  
-    function saveScroll() {
-      const content = document.getElementById('scrollEditor').value;
-      alert("📜 Scroll saved (in memory):\n\n" + content);
-    }
-  </script>
-  <script>
+
     function saveScroll() {
       const title = document.getElementById("scrollTitle").value.trim();
       const tag = document.getElementById("scrollTag").value;
       const content = document.getElementById("scrollEditor").value.trim();
-    
       const filename = title ? `Scroll ${title.replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}.md` : `Scroll Untitled.md`;
       const fullContent = `Filed by: The Nameless Hero\nStatus: ${tag}\n\n${content}`;
-    
       const blob = new Blob([fullContent], { type: "text/markdown" });
       const url = URL.createObjectURL(blob);
-    
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
       a.click();
     }
-    </script>
-    
-  
-  
+  </script>
 </body>
 </html>
